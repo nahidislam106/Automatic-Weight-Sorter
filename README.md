@@ -63,7 +63,8 @@ An Arduino-based **automatic weight sorter** that measures an object's weight us
 | Arduino Uno (or Nano)| 1        |
 | HX711 Load Cell Amplifier | 1    |
 | 5kg Load Cell (4-wire)| 1       |
-| Servo Motor (MG90S)  | 1        |
+| Servo Motor (MG90S) — Sorting | 1        |
+| Servo Motor (MG90S) — Release | 1        |
 | 16x2 LCD (I2C)       | 1        |
 | Tactile Push Button  | 1        |
 | Breadboard & Jumper Wires | -   |
@@ -79,6 +80,7 @@ An Arduino-based **automatic weight sorter** that measures an object's weight us
 | HX711 SCK        | D4          |
 | Tare Button      | D6 (other leg → GND) |
 | Servo Signal     | D3          |
+| Release Servo    | D2          |
 | LCD SDA          | A4          |
 | LCD SCL          | A5          |
 
@@ -128,9 +130,10 @@ An Arduino-based **automatic weight sorter** that measures an object's weight us
 │  4. After 8s wait, servo sorts:             │
 │     - Weight >= 300g → Servo RIGHT (150)    │
 │     - Weight <  300g → Servo LEFT  (60)     │
-│  5. After object is removed, servo returns  │
-│     to CENTER (109) after 8s delay          │
-│  6. Cycle repeats                          │
+│  5. Release servo opens to drop the object  │
+│  6. After object is removed, servo returns  │
+│     to CENTER (109) and release closes      │
+│  7. Cycle repeats                          │
 └─────────────────────────────────────────────┘
 ```
 
@@ -161,13 +164,13 @@ An Arduino-based **automatic weight sorter** that measures an object's weight us
 ## Usage
 
 1. Power up the Arduino — the LCD shows "Weight Sorter" and "HSTU 2026".
-2. The servo starts at **center** (109°).
+2. The servo starts at **center** (109°) and release servo is **closed**.
 3. Place an object on the load cell.
 4. The LCD shows a progress bar `[##   ]` tracking stability.
 5. Once stable, after the 8-second delay, the servo sorts the object:
-   - **≥ 300g** → Servo moves **RIGHT** (150°)
-   - **< 300g** → Servo moves **LEFT** (60°)
-6. Remove the object — after 8 seconds, the servo returns to center.
+   - **≥ 300g** → Servo moves **RIGHT (150°)**, release servo opens
+   - **< 300g** → Servo moves **LEFT (60°)**, release servo opens
+6. Remove the object — after 8 seconds, the servo returns to center and release servo closes.
 7. Press the **Tare button** anytime to reset the scale.
 
 ---
@@ -185,10 +188,18 @@ Key constants are defined at the top of `code.ino` and can be adjusted:
 #define DELAY_BEFORE_SORT   8000     // ms before sorting
 #define DELAY_BEFORE_RETURN 8000     // ms before returning to center
 
-Servo angles:
+Sorting servo angles:
 #define SERVO_CENTER   109
 #define SERVO_RIGHT    150
 #define SERVO_LEFT     60
+
+Release servo angles:
+#define RELEASE_CLOSED   0
+#define RELEASE_OPEN    90
+
+Pins:
+#define SERVO_PIN        3
+#define RELEASE_SERVO_PIN 2
 
 CalFactor: 375
 ```
