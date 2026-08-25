@@ -9,7 +9,7 @@
  *       waits 1.5s then release servo flips to
  *       RELEASE pos to push/drop object
  *    4. After 1s, release servo returns to HOLD pos
- *
+
  *  Pins:
  *    HX711 DT       → D5
  *    HX711 SCK      → D4
