@@ -1,7 +1,7 @@
 /*
  * ================================================
  *  Automatic Weight Sorter - WITH RELEASE SERVO
- *
+
  *  Changes from previous version:
  *    1. Added Release Servo on D2
  *    2. Release servo holds object (HOLD pos) by default
