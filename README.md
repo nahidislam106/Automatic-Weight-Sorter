@@ -72,6 +72,49 @@ An Arduino-based **automatic weight sorter** that measures an object's weight us
 
 ---
 
+## 🔌 Wiring Diagram
+
+Below is a visual guide for connecting the components. You can also refer to the [Pin Connections](#pin-connections) table for exact pin mappings.
+
+```mermaid
+graph TD
+    Arduino((Arduino Uno / Nano))
+    
+    subgraph Load Cell System
+        LC[5kg Load Cell] -->|4 Wires| HX[HX711 Amplifier]
+        HX -->|DT| A1[D5]
+        HX -->|SCK| A2[D4]
+        HX -->|VCC| A3[5V]
+        HX -->|GND| A4[GND]
+    end
+
+    subgraph Display
+        LCD[16x2 I2C LCD] -->|SDA| L1[A4]
+        LCD -->|SCL| L2[A5]
+        LCD -->|VCC| L3[5V]
+        LCD -->|GND| L4[GND]
+    end
+
+    subgraph Actuators
+        S1[Sorting Servo MG90S] -->|Signal| S1A[D3]
+        S1 -->|VCC| S1B[5V]
+        S1 -->|GND| S1C[GND]
+        
+        S2[Release Servo MG90S] -->|Signal| S2A[D2]
+        S2 -->|VCC| S2B[5V]
+        S2 -->|GND| S2C[GND]
+    end
+
+    subgraph Controls
+        BTN[Tare Button] -->|Pin 1| B1[D6]
+        BTN -->|Pin 2| B2[GND]
+    end
+
+    Arduino --- A1 & A2 & A3 & A4
+    Arduino --- L1 & L2
+    Arduino --- S1A & S2A
+    Arduino --- B1
+
 ## Pin Connections
 
 | Component        | Arduino Pin |
